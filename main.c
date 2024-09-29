@@ -7,6 +7,8 @@
 #include <task.h>
 
 
+#define LED_PIN            ( PICO_DEFAULT_LED_PIN )
+
 #define DEFAULT_COUNT      ( 5U )
 
 #define tskLED_PRIORITY    ( tskIDLE_PRIORITY + 1U )
@@ -40,28 +42,21 @@ static void FreeRTOS_Application(void)
     }
 
     vTaskStartScheduler();
-
-    while (true)
-    {
-        tight_loop_contents();
-    }
 }
 
 static void ConfigureLed(void)
 {
-    gpio_init(PICO_DEFAULT_LED_PIN);
-    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
-    gpio_put(PICO_DEFAULT_LED_PIN, 0);
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);
+    gpio_put(LED_PIN, 0);
 }
 
 static void StartBlink(uint8_t const count)
 {
-    for (uint8_t idx = 1; idx <= count; ++idx)
+    for (uint8_t idx = 1; idx <= count * 2; ++idx)
     {
-        gpio_put(PICO_DEFAULT_LED_PIN, 1);
-        sleep_ms(100);
-        gpio_put(PICO_DEFAULT_LED_PIN, 0);
-        sleep_ms(100);
+        gpio_put(LED_PIN, idx % 2);
+        sleep_ms(50);
     }
 }
 
@@ -69,11 +64,13 @@ static void vTaskLed(void * pvParameters)
 {
     (void) pvParameters;
 
+    static const TickType_t xDelay = pdMS_TO_TICKS(1000);
+
+    TickType_t xNextWakeTime = xTaskGetTickCount();
+
     while (true)
     {
-        gpio_put(PICO_DEFAULT_LED_PIN, 1);
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-        gpio_put(PICO_DEFAULT_LED_PIN, 0);
-        vTaskDelay(500 / portTICK_PERIOD_MS);
+        gpio_put(LED_PIN, !gpio_get(LED_PIN));
+        xTaskDelayUntil(&xNextWakeTime, xDelay);
     }
 }

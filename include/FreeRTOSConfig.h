@@ -53,7 +53,7 @@
  * settings.  Your application will certainly need a different value so set this
  * correctly. This is very often, but not always, equal to the main system clock
  * frequency. */
-#define configCPU_CLOCK_HZ    125000000UL
+#define configCPU_CLOCK_HZ                         ( ( unsigned long) 125000000 )
 
 /* configSYSTICK_CLOCK_HZ is an optional parameter for ARM Cortex-M ports only.
  *
@@ -77,7 +77,7 @@
 
 /* configTICK_RATE_HZ sets frequency of the tick interrupt in Hz, normally
  * calculated from the configCPU_CLOCK_HZ value. */
-#define configTICK_RATE_HZ                         1000UL 
+#define configTICK_RATE_HZ                         ( ( TickType_t ) 1000 )
 
 /* Set configUSE_PREEMPTION to 1 to use pre-emptive scheduling.  Set
  * configUSE_PREEMPTION to 0 to use co-operative scheduling.
@@ -115,7 +115,7 @@
  * (in words, not in bytes!).  The kernel does not use this constant for any
  * other purpose.  Demo applications use the constant to make the demos somewhat
  * portable across hardware architectures. */
-#define configMINIMAL_STACK_SIZE                   512
+#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 512 )
 
 /* configMAX_TASK_NAME_LEN sets the maximum length (in characters) of a task's
  * human readable name.  Includes the NULL terminator. */
@@ -287,7 +287,7 @@
  * or heap_4.c are included in the build.  This value is defaulted to 4096 bytes
  * but it must be tailored to each application.  Note the heap will appear in
  * the .bss section.  See https://www.freertos.org/a00111.html. */
-#define configTOTAL_HEAP_SIZE                        ( 128 * 1024 )
+#define configTOTAL_HEAP_SIZE                        ( ( size_t ) ( 128 * 1024 ) )
 
 /* Set configAPPLICATION_ALLOCATED_HEAP to 1 to have the application allocate
  * the array used as the FreeRTOS heap.  Set to 0 to have the linker allocate
