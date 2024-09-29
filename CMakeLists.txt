@@ -18,8 +18,8 @@ cmake_minimum_required(VERSION 3.13)
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_STANDARD 23)
+set(CMAKE_CXX_STANDARD 23)
 
 set(PICO_SDK_PATH "${CMAKE_SOURCE_DIR}/pico-sdk")
 set(FREERTOS_KERNEL_PATH "${CMAKE_SOURCE_DIR}/freertos-kernel")
@@ -48,6 +48,7 @@ target_include_directories(freertos_config INTERFACE ${CMAKE_SOURCE_DIR}/include
 target_link_libraries(DemoFreeRTOS
     pico_stdlib
     hardware_gpio 
+    hardware_adc
     freertos_config
     FreeRTOS-Kernel-Heap4
 )
