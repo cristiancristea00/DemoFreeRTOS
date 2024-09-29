@@ -36,20 +36,23 @@ project(DemoFreeRTOS)
 
 pico_sdk_init()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wfatal-errors -Wall -Wextra -Wconversion -Wshadow=local -Wdouble-promotion -Wformat=2 -Wformat-overflow=2 \
-                -Wformat-nonliteral -Wformat-security -Wformat-truncation=2 -Wnull-dereference -Wimplicit-fallthrough=3 -Wshift-overflow=2         \
-                -Wswitch-default -Wunused-parameter -Wunused-const-variable=2 -Wstrict-overflow=4 -Wstringop-overflow=3  -Wmissing-noreturn        \
-                -Wsuggest-attribute=malloc -Wsuggest-attribute=format -Wmissing-format-attribute -Wsuggest-attribute=cold -Walloc-zero -Walloca    \
-                -Wattribute-alias=2 -Wduplicated-branches -Wcast-qual -Wno-main")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wfatal-errors -Wall -Wextra -Wconversion -Wunused-parameter -Wno-main")
 
 add_executable(DemoFreeRTOS main.c)
 
 include_directories(${CMAKE_SOURCE_DIR}/include ${FREERTOS_KERNEL_PATH}/include)
 
+add_library(freertos_config INTERFACE)
+target_include_directories(freertos_config INTERFACE ${CMAKE_SOURCE_DIR}/include)
+
 target_link_libraries(DemoFreeRTOS
     pico_stdlib
     hardware_gpio 
+    freertos_config
     FreeRTOS-Kernel-Heap4
 )
+
+pico_enable_stdio_usb(DemoFreeRTOS 1)
+pico_enable_stdio_uart(DemoFreeRTOS 0)
 
 pico_add_extra_outputs(DemoFreeRTOS)

@@ -418,7 +418,7 @@
 #define configASSERT( x )         \
     if( ( x ) == 0 )              \
     {                             \
-        taskDISABLE_INTERRUPTS(); \
+        portDISABLE_INTERRUPTS(); \
         for( ; ; )                \
         ;                         \
     }
